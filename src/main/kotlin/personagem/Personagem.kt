@@ -1,8 +1,8 @@
+// Arquivo: Personagem.kt
 package personagem
 
 import classes.Classe
 import racas.Raca
-import kotlin.collections.iterator
 
 class Personagem(val raca: Raca, val classe: Classe) {
     val atributos = mutableMapOf(
@@ -13,13 +13,4 @@ class Personagem(val raca: Raca, val classe: Classe) {
         "sabedoria" to 0,
         "carisma" to 0
     )
-
-    fun exibirAtributos(){
-        println("=======================")
-        println("ATRIBUTOS DO PERSONAGEM")
-        for ((atributo, valor) in this.atributos) {
-            println("$atributo: $valor")
-        }
-        println("=======================")
-    }
 }

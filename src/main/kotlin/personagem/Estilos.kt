@@ -2,66 +2,50 @@ package personagem
 
 import dados.Dado
 import rpg.dados.somar
-import utils.Console
 import kotlin.collections.iterator
 
 class Estilos{
-    fun estiloClassico(personagem: Personagem, dados: MutableList<Dado>){
-        for((atributo, valor) in personagem.atributos){
-            personagem.atributos[atributo] = dados.somar()
+    fun estiloClassico(dados: MutableList<Dado>): Map<String, Int>{
+        val atributos = mutableMapOf(
+            "forca" to 0,
+            "destreza" to 0,
+            "constituicao" to 0,
+            "inteligencia" to 0,
+            "sabedoria" to 0,
+            "carisma" to 0
+        )
+        for((atributo, valor) in atributos){
+            atributos[atributo] = dados.somar()
         }
+        return atributos
     }
 
-    private fun estiloEscolhivel(personagem: Personagem, dados: MutableList<Dado>, isHeroico: Boolean) {
-        val console = Console()
+    private fun estiloEscolhivel(dados: MutableList<Dado>, isHeroico: Boolean): List<Int> {
         val valoresGerados = mutableListOf<Int>()
         var resultadoSomaDados = 0
 
-        for (i in 1..personagem.atributos.size) {
-
+        for (i in 1..6) {
             resultadoSomaDados = dados.somar()
 
             if (isHeroico){
                 resultadoSomaDados = resultadoSomaDados - (dados.minOfOrNull { it.faceAtual } ?: 0)
             }
-
             valoresGerados.add(resultadoSomaDados)
         }
-
-        for ((atributo, valor) in personagem.atributos) {
-            for (i in 0..valoresGerados.size - 1) {
-                println("${(i + 1)} - Valor: ${valoresGerados.get(i)}")
-            }
-
-            val opcao = console.inputPlus(
-                "Digite qual desses valores vai para ${atributo}: ",
-                1,
-                valoresGerados.size
-            )
-
-            personagem.atributos[atributo] = valoresGerados.get(opcao - 1)
-
-            valoresGerados.removeAt(opcao - 1)
-
-            console.clearConsole()
-        }
+        return valoresGerados
     }
 
-    fun estiloAventureiro(personagem: Personagem, dados: MutableList<Dado>){
-        estiloEscolhivel(
-            personagem,
+    fun estiloAventureiro(dados: MutableList<Dado>): List<Int>{
+        return estiloEscolhivel(
             dados,
             false
         )
     }
 
-    fun estiloHeroico(personagem: Personagem, dados: MutableList<Dado>) {
-        estiloEscolhivel(
-            personagem,
+    fun estiloHeroico(dados: MutableList<Dado>): List<Int> {
+        return estiloEscolhivel(
             dados,
             true
         )
     }
 }
-
-
